@@ -63,6 +63,7 @@ public class Shop
     {
         return !(shop1 == shop2);
     }
+    
     public static bool operator >(Shop shop1, Shop shop2)
     {
         if (ReferenceEquals(shop1, null) || ReferenceEquals(shop2, null))
