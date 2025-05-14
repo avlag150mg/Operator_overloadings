@@ -1,46 +1,121 @@
 ﻿using System;
 
-public class TemperatureArray
+public class Shop
 {
-    // Автоматична властивість для зберігання температури за днями тижня
-    public double[] Temperatures { get; private set; } = new double[7];
+    private string _name;
+    private string _address;
+    private double _area;
 
-    // Індексатор для доступу до температури за індексом дня
-    public double this[int dayIndex]
+    public string Name
     {
-        get
-        {
-            if (dayIndex < 0 || dayIndex >= Temperatures.Length)
-                throw new IndexOutOfRangeException("Неправильний індекс дня тижня. Має бути від 0 до 6.");
-            return Temperatures[dayIndex];
-        }
+        get => _name;
+        set => _name = value;
+    }
+
+    public string Address
+    {
+        get => _address;
+        set => _address = value;
+    }
+
+    public double Area
+    {
+        get => _area;
         set
         {
-            if (dayIndex < 0 || dayIndex >= Temperatures.Length)
-                throw new IndexOutOfRangeException("Неправильний індекс дня тижня. Має бути від 0 до 6.");
-            Temperatures[dayIndex] = value;
+            if (value >= 0)
+                _area = value;
+            else
+                throw new ArgumentException("Площа не може бути від'ємною!");
         }
     }
 
-    // Метод для обчислення середньої температури за тиждень
-    public double GetAverageTemperature()
+    public Shop(string name, string address, double area)
     {
-        double sum = 0;
-        foreach (var temp in Temperatures)
-        {
-            sum += temp;
-        }
-        return sum / Temperatures.Length;
+        Name = name;
+        Address = address;
+        Area = area;
     }
 
-    // Метод для виведення всіх температур
-    public void PrintTemperatures()
+    public static Shop operator +(Shop shop, double additionalArea)
     {
-        string[] days = { "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота", "Неділя" };
-        
-        for (int i = 0; i < Temperatures.Length; i++)
-        {
-            Console.WriteLine($"{days[i]}: {Temperatures[i]} °C");
-        }
+        return new Shop(shop.Name, shop.Address, shop.Area + additionalArea);
+    }
+
+    public static Shop operator -(Shop shop, double reductionArea)
+    {
+        double newArea = shop.Area - reductionArea;
+        if (newArea < 0)
+            newArea = 0;
+        return new Shop(shop.Name, shop.Address, newArea);
+    }
+
+    public static bool operator ==(Shop shop1, Shop shop2)
+    {
+        if (ReferenceEquals(shop1, shop2))
+            return true;
+        if (ReferenceEquals(shop1, null) || ReferenceEquals(shop2, null))
+            return false;
+        return shop1.Area == shop2.Area;
+    }
+
+    public static bool operator !=(Shop shop1, Shop shop2)
+    {
+        return !(shop1 == shop2);
+    }
+
+    public static bool operator >(Shop shop1, Shop shop2)
+    {
+        if (ReferenceEquals(shop1, null) || ReferenceEquals(shop2, null))
+            throw new ArgumentNullException("Об'єкти не можуть бути null!");
+        return shop1.Area > shop2.Area;
+    }
+
+    public static bool operator <(Shop shop1, Shop shop2)
+    {
+        if (ReferenceEquals(shop1, null) || ReferenceEquals(shop2, null))
+            throw new ArgumentNullException("Об'єкти не можуть бути null!");
+        return shop1.Area < shop2.Area;
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+            return false;
+
+        Shop other = (Shop)obj;
+        return Area == other.Area;
+    }
+
+    public override int GetHashCode()
+    {
+        return Area.GetHashCode();
+    }
+
+    public void PrintInfo()
+    {
+        Console.WriteLine($"Магазин: {Name}, Адреса: {Address}, Площа: {Area} кв.м");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Shop shop1 = new Shop("АТБ", "Київ, вул. Центральна, 1", 500);
+        Shop shop2 = new Shop("Сільпо", "Київ, вул. Шевченка, 12", 650);
+
+        shop1.PrintInfo();
+        shop2.PrintInfo();
+
+        Console.WriteLine("\nЗбільшуємо площу АТБ на 100 м²:");
+        shop1 = shop1 + 100;
+        shop1.PrintInfo();
+
+        Console.WriteLine("\nЧи магазини однакові за площею?");
+        Console.WriteLine(shop1 == shop2 ? "Так" : "Ні");
+
+        Console.WriteLine("\nЯкий магазин більший?");
+        Console.WriteLine(shop1 > shop2 ? "АТБ більший" : "Сільпо більший");
     }
 }
