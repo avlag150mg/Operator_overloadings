@@ -92,6 +92,7 @@ public class Shop
         return Area.GetHashCode();
     }
 
+    
     public void PrintInfo()
     {
         Console.WriteLine($"Магазин: {Name}, Адреса: {Address}, Площа: {Area} кв.м");
