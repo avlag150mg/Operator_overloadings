@@ -2,10 +2,8 @@
 
 public class TemperatureArray
 {
-    // Автоматична властивість для зберігання температури за днями тижня
     public double[] Temperatures { get; private set; } = new double[7];
 
-    // Індексатор для доступу до температури за індексом дня
     public double this[int dayIndex]
     {
         get
@@ -22,7 +20,6 @@ public class TemperatureArray
         }
     }
 
-    // Метод для обчислення середньої температури за тиждень
     public double GetAverageTemperature()
     {
         double sum = 0;
@@ -32,8 +29,6 @@ public class TemperatureArray
         }
         return sum / Temperatures.Length;
     }
-
-    // Метод для виведення всіх температур
     public void PrintTemperatures()
     {
         string[] days = { "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота", "Неділя" };
@@ -42,5 +37,27 @@ public class TemperatureArray
         {
             Console.WriteLine($"{days[i]}: {Temperatures[i]} °C");
         }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        TemperatureArray temps = new TemperatureArray();
+
+        // Записуємо температури для тижня
+        temps[0] = 15.5;
+        temps[1] = 17.2;
+        temps[2] = 16.0;
+        temps[3] = 18.1;
+        temps[4] = 19.3;
+        temps[5] = 20.0;
+        temps[6] = 18.5;
+
+        Console.WriteLine("Температури за тиждень:");
+        temps.PrintTemperatures();
+
+        Console.WriteLine($"\nСередня температура за тиждень: {temps.GetAverageTemperature():F2} °C");
     }
 }
