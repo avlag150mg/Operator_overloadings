@@ -4,7 +4,7 @@ public class Shop
 {
     private string _name;
     private string _address;
-    private double _area; 
+    private double _area;
 
     public string Name
     {
@@ -46,7 +46,7 @@ public class Shop
     {
         double newArea = shop.Area - reductionArea;
         if (newArea < 0)
-            newArea = 0; 
+            newArea = 0;
         return new Shop(shop.Name, shop.Address, newArea);
     }
 
@@ -63,7 +63,7 @@ public class Shop
     {
         return !(shop1 == shop2);
     }
-    
+
     public static bool operator >(Shop shop1, Shop shop2)
     {
         if (ReferenceEquals(shop1, null) || ReferenceEquals(shop2, null))
@@ -92,9 +92,33 @@ public class Shop
         return Area.GetHashCode();
     }
 
-    
     public void PrintInfo()
     {
         Console.WriteLine($"Магазин: {Name}, Адреса: {Address}, Площа: {Area} кв.м");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Shop shop1 = new Shop("АТБ", "вул. Центральна 1", 200);
+        Shop shop2 = new Shop("Сільпо", "вул. Київська 10", 300);
+
+        Console.WriteLine("Початкові магазини:");
+        shop1.PrintInfo();
+        shop2.PrintInfo();
+
+        Console.WriteLine("\nПорівняння:");
+        Console.WriteLine($"shop1 == shop2: {shop1 == shop2}");
+        Console.WriteLine($"shop1 > shop2: {shop1 > shop2}");
+        Console.WriteLine($"shop1 < shop2: {shop1 < shop2}");
+
+        Console.WriteLine("\nЗміна площі:");
+        shop1 = shop1 + 150;
+        shop2 = shop2 - 100;
+
+        shop1.PrintInfo();
+        shop2.PrintInfo();
     }
 }
